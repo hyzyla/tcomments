@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+
+  app:
+    tty: true
+    environment: &app-environment
+      DATABASE_URL: postgres://admin:admin@db/bot
+      TELEGRAM_TOKEN: 1021444847:AAEBxfuanz8RSshZTR6ke2czcKApan1Yp6M
+      SECRET_KEY: secret
+      FLASK_APP: app:app
+      FLASK_DEBUG: "1"
+      FLASK_ENV: development
+
+      SECURITY_PASSWORD_HASH: "pbkdf2_sha512"
+      SECURITY_PASSWORD_SALT: "ATGUOHAELKiubahiughaerGOJAEGj"
+      SECURITY_REGISTERABLE: "False"
+      SECURITY_SEND_REGISTER_EMAIL: "False"
+
+      REMAP_SIGTERM: SIGQUIT  # For correct celery reload
+      REDIS_URL: redis://redis:6379/12
+      BROKER_POOL_LIMIT: "0"
+
+    build: .
+    image: bot-web
+    ports: ["5000:5000"]
+    volumes: ['.:/work']
+    depends_on: [db, worker, redis]
+    entrypoint: flask
+    command: run --host 0.0.0.0
+
+  worker:
+    tty: true
+    environment:
+      <<: *app-environment
+    build: .
+    image: bot-worker
+    volumes: ['.:/work']
+    depends_on: ["db", "redis"]
+    entrypoint: dramatiq --watch=telefeed telefeed.tasks
+
+  db:
+    image: postgres
+    ports: ["5432:5432"]
+    volumes:
+      - ./.database:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: bot
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+
+  redis:
+    image: redis
+    ports: ["6379:6379"]
+    hostname: redis
