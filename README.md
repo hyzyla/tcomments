@@ -15,9 +15,9 @@ dcp run --rm app db upgrade heads
 ```
 
 #### Starting
-Run application and worker
+Run application
 ```shell script
-dcp up app worker
+dcp up app
 ```
 
 ### Other
