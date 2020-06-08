@@ -1,18 +1,13 @@
-import os
+from app import setup
 
-import flask
-from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
+app = setup.prepare_app()
+db = setup.prepare_db(app)
+migration = setup.prepare_migration(app, db)
+dispatcher = setup.prepare_dispatcher(app)
+login_manager = setup.prepare_login(app)
 
-app = flask.Flask(__name__)
-
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
 
 from . import models
 from . import handlers
 
+setup.prepare_handlers(dispatcher)

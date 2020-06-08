@@ -2,7 +2,12 @@
 Flask-SQLAlchemy==2.4.1
 Flask-Migrate==2.5.3
 Flask==1.1.2
+Flask-Login==0.5.0
+
 gunicorn==20.0.4
 
 # Storage
 psycopg2==2.8.5
+
+# Telegram
+python-telegram-bot==12.7

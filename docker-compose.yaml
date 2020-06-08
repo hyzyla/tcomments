@@ -6,6 +6,10 @@ services:
     tty: true
     environment: &app-environment
       DATABASE_URL: postgres://admin:admin@db/bot
+      TELEGRAM_TOKEN: 1234815723:AAHAkpRGROOYOjzZXONvgK990mROjISOkbM
+      TELEGRAM_BOT_USERNAME: "@dev_tcomments_bot"
+      DOMAIN: 6d02b7b6546b.ngrok.io
+      SECRET_KEY: secret
       FLASK_APP: app:app
       FLASK_DEBUG: "1"
       FLASK_ENV: development
