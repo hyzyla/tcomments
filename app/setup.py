@@ -3,6 +3,7 @@ from queue import Queue
 
 import telegram
 from flask import Flask
+from flask_cors import CORS
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
@@ -17,6 +18,9 @@ def prepare_app() -> Flask:
     app.config['DOMAIN'] = os.environ['DOMAIN']
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
+    app.secret_key = app.config['SECRET_KEY']
+    app.config['FLASK_ENV'] = os.environ['FLASK_ENV']
+    app.config['SESSION_COOKIE_DOMAIN'] = os.environ['SESSION_COOKIE_DOMAIN']
     return app
 
 
@@ -26,6 +30,10 @@ def prepare_db(app: Flask) -> SQLAlchemy:
 
 def prepare_migration(app: Flask, db: SQLAlchemy) -> Migrate:
     return Migrate(app, db)
+
+
+def prepare_cors(app: Flask) -> CORS:
+    return CORS(app)
 
 
 def prepare_login(app: Flask) -> LoginManager:

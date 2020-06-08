@@ -32,3 +32,6 @@ werkzeug==1.0.0           # via flask
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
+
+
+Flask-CORS==3.0.8

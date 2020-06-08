@@ -1,23 +1,25 @@
 import React, { FC } from 'react';
 import css from './PostPage.module.css';
 import { PostCard } from "../PostCard/PostCard";
-import { CommentsList } from "../CommentsList/CommentsList";
 import { Post, Comment } from "../../types";
+import {Comments} from "../CommentsList/Comments";
 
-
+export const postContext = React.createContext<Post | null>(null);
 
 interface Props {
     post: Post;
-    comments: Comment[]
+    comments: Comment[],
 }
 
-
-export const PostPage: FC<Props> = ({ post, comments }) => {
+export const PostPage: FC<Props> = (props) => {
+    const { Provider } = postContext;
     return (
         <div className={css.root}>
             <div className={css.article}>
-                <PostCard post={post}/>
-                <CommentsList comments={comments}/>
+                <PostCard post={props.post}/>
+                <Provider value={props.post}>
+                    <Comments comments={props.comments}/>
+                </Provider>
             </div>
         </div>
     );

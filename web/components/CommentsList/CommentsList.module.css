@@ -1,5 +1,6 @@
 .item {
     list-style-type: none;
+    display: flex;
 }
 
 
@@ -12,6 +13,7 @@
 .author {
     font-weight: bold;
     margin-right: 10px;
+    font-size: smaller;
 }
 
 
@@ -27,14 +29,34 @@
 }
 
 
-.children {
-    padding-left: 20px;
+.body {
+    margin-left: 10px;
+    width: 100%;
 }
 
+.content {
+    margin-bottom: 10px;
+}
 
 .text {
     margin-top: 2px;
-    margin-bottom: 15px;
+    margin-bottom: 0;
 }
 
 
+.form {
+    margin-top: 5px
+}
+
+
+.input {
+    width: 100%;
+}
+
+
+.icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    background-color: grey
+}

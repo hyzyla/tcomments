@@ -4,6 +4,7 @@ app = setup.prepare_app()
 db = setup.prepare_db(app)
 migration = setup.prepare_migration(app, db)
 dispatcher = setup.prepare_dispatcher(app)
+cors = setup.prepare_cors(app)
 login_manager = setup.prepare_login(app)
 
 

@@ -1,0 +1,26 @@
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.buttons {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}
+
+.input {
+    width: auto;
+    margin-bottom: 5px;
+    height: 70px;
+    resize: vertical;
+}
+
+
+
+.error {
+    color: red;
+    font-size: small;
+    margin: 0;
+}

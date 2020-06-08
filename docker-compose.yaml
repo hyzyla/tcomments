@@ -5,11 +5,12 @@ services:
   app:
     tty: true
     environment: &app-environment
-      DATABASE_URL: postgres://admin:admin@db/bot
+      DATABASE_URL: postgres://admin:admin@db/tcomments
       TELEGRAM_TOKEN: 1234815723:AAHAkpRGROOYOjzZXONvgK990mROjISOkbM
       TELEGRAM_BOT_USERNAME: "@dev_tcomments_bot"
-      DOMAIN: 6d02b7b6546b.ngrok.io
-      SECRET_KEY: secret
+      DOMAIN: devtcommentshyzyla.serveo.net
+      SESSION_COOKIE_DOMAIN: 127.0.0.1:3000
+      SECRET_KEY: 9qD7OKjYzZ0d8EsjBIKQ4RR57A1GHZODT
       FLASK_APP: app:app
       FLASK_DEBUG: "1"
       FLASK_ENV: development

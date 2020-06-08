@@ -1,15 +1,17 @@
 import hashlib
 import hmac
 from http import HTTPStatus
-from typing import Dict, Optional
+from typing import Dict, Optional, List, Any
 from urllib.parse import urlparse, urljoin
 
+import flask
 import telegram
 from flask import request, abort, Response
 from telegram import LoginUrl, InlineKeyboardButton
 
 from app import dispatcher, app, db
-from app.models import User, Post
+from app.models import User, Post, Comment
+from app.types import GroupedComment
 
 
 def get_update_from_request():
@@ -82,6 +84,59 @@ def get_user(user_id: str) -> Optional[User]:
     return User.query.get(user_id)
 
 
+def get_post(post_id: str) -> Optional[Post]:
+    return Post.query.get(post_id)
+
+
+def comment_to_json(comment: Comment) -> Dict[str, str]:
+    return {
+        'id': comment.id,
+        'text': comment.text,
+        'date': '2020.01.01',
+        'author': {
+            'id': 1,
+            'name': 'BOB'
+        },
+    }
+
+
+def comments_to_json(comments: List[GroupedComment]) -> List[Dict[str, Any]]:
+    return [
+        {
+            **comment_to_json(comment.parent),
+            'children': comments_to_json(comment.children),
+        }
+        for comment in comments
+    ]
+
+
+def create_comment(data: Dict[str, str]) -> Comment:
+    comment = Comment(
+        text=data['text'],
+        post_id=data['post_id'],
+        parent_id=data.get('parent_id')
+    )
+    db.session.add(comment)
+    db.session.commit()
+    return comment
+
+
+def get_post_comments(post_id: str) -> List[Comment]:
+    return Comment.query.filter_by(post_id=post_id).all()
+
+
+def group_comments(comments: List[Comment], parent_id: Optional[str] = None) -> List[GroupedComment]:
+    children = (c for c in comments if c.parent_id == parent_id)
+    return [
+        GroupedComment(
+            parent=child,
+            children=group_comments(comments, child.id),
+        )
+        for child in children
+    ]
+
+
+
 def build_open_comments_button(post: Post):
     bot_username = app.config['TELEGRAM_BOT_USERNAME']
     domain = app.config['DOMAIN']
@@ -98,5 +153,8 @@ def is_safe_url(target):
     return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
 
 
-def redirect():
-    pass
+def redirect(target: str):
+    if app.config['FLASK_ENV'] == 'development':
+        return flask.redirect(f'http://localhost:3000{target}')
+    return flask.redirect(target)
+
