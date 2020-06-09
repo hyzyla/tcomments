@@ -33,7 +33,7 @@ def prepare_migration(app: Flask, db: SQLAlchemy) -> Migrate:
 
 
 def prepare_cors(app: Flask) -> CORS:
-    return CORS(app)
+    return CORS(app, supports_credentials=True)
 
 
 def prepare_login(app: Flask) -> LoginManager:

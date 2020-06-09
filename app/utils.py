@@ -155,6 +155,6 @@ def is_safe_url(target):
 
 def redirect(target: str):
     if app.config['FLASK_ENV'] == 'development':
-        return flask.redirect(f'http://localhost:3000{target}')
+        return flask.redirect(f'http://127.0.0.1:3000{target}')
     return flask.redirect(target)
 

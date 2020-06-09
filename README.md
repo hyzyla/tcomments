@@ -40,7 +40,7 @@ pip-compile requirements/base.in -o requirements/base.txt
 
 Localhost forwarding (TODO: add to docker-compose)
 ```shell script
-ssh -o ServerAliveInterval=60 -R devtcommentshyzyla:80:localhost:5000 -R devtcommentshyzylafront:80:localhost:3000 serveo.net
+ssh -o ServerAliveInterval=60 -R devtcommentshyzyla:80:localhost:5000 serveo.net
 ```
 
 # FRONTNED

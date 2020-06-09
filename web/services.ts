@@ -16,7 +16,7 @@ const postRequest = async (url: string, data: any) => {
     return await processRequest(url, {
         method: 'POST',
         body: JSON.stringify(data),
-        credentials: 'same-origin',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         }
