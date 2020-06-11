@@ -45,7 +45,7 @@ def bot_handler():
     return 'OK'
 
 
-@app.route('/index')
+@app.route('/api/index')
 def index():
     return f'HELLO {current_user}'
 
@@ -59,6 +59,7 @@ def auth_telegram2():
     if not is_safe_url(next_url):
         return abort(400)
     session['hello'] = 'world!'
+    # flask.url_for()
     print(next_url)
     # return 'ok'
     return flask.redirect(next_url)

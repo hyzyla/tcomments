@@ -21,6 +21,7 @@ def prepare_app() -> Flask:
     app.secret_key = app.config['SECRET_KEY']
     app.config['FLASK_ENV'] = os.environ['FLASK_ENV']
     app.config['SESSION_COOKIE_DOMAIN'] = os.environ['SESSION_COOKIE_DOMAIN']
+    # app.config['SERVER_NAME'] = os.environ['SERVER_NAME']
     return app
 
 
