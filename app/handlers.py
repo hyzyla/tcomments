@@ -51,12 +51,6 @@ def index():
 
 
 @app.route('/api/auth/telegram', methods=['GET'])
-def auth_telegram():
-    path = request.full_path.replace('/api/auth/telegram', '/api/auth/telegram2')
-    return flask.redirect(f'http://127.0.0.1:5000{path}')
-
-
-@app.route('/api/auth/telegram2', methods=['GET'])
 def auth_telegram2():
     args, next_url = validate_telegram_auth()
     user = create_user(args)
@@ -65,4 +59,7 @@ def auth_telegram2():
     if not is_safe_url(next_url):
         return abort(400)
     session['hello'] = 'world!'
-    return redirect(next_url)
+    print(next_url)
+    # return 'ok'
+    return flask.redirect(next_url)
+    # return redirect(next_url)
