@@ -49,7 +49,6 @@ def index():
     return f'HELLO {current_user}'
 
 
-
 @app.route('/api/auth/telegram', methods=['GET'])
 def auth_telegram():
     args, next_url = validate_telegram_auth()
