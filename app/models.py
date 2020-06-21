@@ -31,5 +31,9 @@ class Comment(db.Model):
     
     id = columns.ID()
     text = columns.Text()
+    date_created = columns.DateCreated()
+    author_id = columns.ForeignID('users.id', nullable=False)
     parent_id = columns.ForeignID('comments.id', nullable=True)
     post_id = columns.ForeignID('posts.id')
+
+    author = db.relationship('User')

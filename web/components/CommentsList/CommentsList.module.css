@@ -19,7 +19,10 @@
 
 .date {
     font-size: small;
-    color: grey
+    color: grey;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 

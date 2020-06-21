@@ -33,7 +33,10 @@ def get_comments(post_id):
 @login_required
 def add_comment(post_id):
     data = request.json
-    comment = utils.create_comment({**data, 'post_id': post_id})
+    comment = utils.create_comment(
+        data={**data, 'post_id': post_id},
+        user=current_user,
+    )
     return utils.comment_to_json(comment)
 
 

@@ -88,15 +88,20 @@ def get_post(post_id: str) -> Optional[Post]:
     return Post.query.get(post_id)
 
 
-def comment_to_json(comment: Comment) -> Dict[str, str]:
+def user_to_json(user: User) -> Dict[str, str]:
+    return {
+        'id': user.id,
+        'name': user.first_name,
+        'photoURL': user.photo_url,
+    }
+
+
+def comment_to_json(comment: Comment) -> Dict[str, Any]:
     return {
         'id': comment.id,
         'text': comment.text,
-        'date': '2020.01.01',
-        'author': {
-            'id': 1,
-            'name': 'BOB'
-        },
+        'date': comment.date_created,
+        'author': user_to_json(comment.author)
     }
 
 
@@ -110,11 +115,12 @@ def comments_to_json(comments: List[GroupedComment]) -> List[Dict[str, Any]]:
     ]
 
 
-def create_comment(data: Dict[str, str]) -> Comment:
+def create_comment(data: Dict[str, str], user: User) -> Comment:
     comment = Comment(
         text=data['text'],
         post_id=data['post_id'],
-        parent_id=data.get('parent_id')
+        parent_id=data.get('parent_id'),
+        author=user,
     )
     db.session.add(comment)
     db.session.commit()

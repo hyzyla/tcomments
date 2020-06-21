@@ -42,3 +42,8 @@ class DateTime(db.Column):
 class JSON(db.Column):
     def __init__(self, nullable: bool = False):
         super().__init__(db.JSON, nullable=nullable)
+
+
+class DateCreated(db.Column):
+    def __init__(self, nullable: bool = False):
+        super().__init__(db.DateTime, nullable=nullable, server_default=sa.text('now()'))

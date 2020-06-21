@@ -29,7 +29,10 @@ export const CommentRow: FC<Props> = ({comment,}) => {
 
     return (
         <li className={css.item}>
-                <div className={css.icon}/>
+                {comment.author.photoURL
+                    ? <img className={css.icon} src={comment.author.photoURL} alt="profile picture" />
+                    : <div className={css.icon} />
+                }
                 <div className={css.body}>
                     <div className={css.content}>
                         <div className={css.header}>

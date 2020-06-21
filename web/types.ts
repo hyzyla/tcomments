@@ -9,6 +9,7 @@ export interface Post {
 export interface CommentAuthor {
     id: string
     name: string;
+    photoURL: string;
 }
 
 
