@@ -15,13 +15,11 @@ def prepare_app() -> Flask:
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
     app.config['TELEGRAM_TOKEN'] = os.environ['TELEGRAM_TOKEN']
     app.config['TELEGRAM_BOT_USERNAME'] = os.environ['TELEGRAM_BOT_USERNAME']
-    app.config['DOMAIN'] = os.environ['DOMAIN']
+    app.config['TELEGRAM_WEBHOOK_DOMAIN'] = os.environ['TELEGRAM_WEBHOOK_DOMAIN']
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
     app.secret_key = app.config['SECRET_KEY']
     app.config['FLASK_ENV'] = os.environ['FLASK_ENV']
-    app.config['SESSION_COOKIE_DOMAIN'] = os.environ['SESSION_COOKIE_DOMAIN']
-    # app.config['SERVER_NAME'] = os.environ['SERVER_NAME']
     return app
 
 

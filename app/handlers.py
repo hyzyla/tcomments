@@ -1,13 +1,13 @@
 import flask
-from flask_login import login_user, login_required, current_user
-from flask import jsonify, request, session
+from flask import jsonify, request
+from flask_login import login_user, current_user, login_required
 from werkzeug.exceptions import abort
 
+from app import utils
 from app.utils import (
     get_update_from_request, validate_telegram_auth, create_user,
-    is_safe_url, redirect, get_post_comments, group_comments, comments_to_json
+    is_safe_url, get_post_comments, group_comments, comments_to_json
 )
-from app import utils
 from . import app, dispatcher
 
 
@@ -20,6 +20,7 @@ def get_post(post_id):
         'date': post.date,
     })
 
+
 @app.route('/api/posts/<post_id>/comments', methods=['GET'])
 def get_comments(post_id):
     comments = get_post_comments(post_id)
@@ -29,10 +30,8 @@ def get_comments(post_id):
 
 
 @app.route('/api/posts/<post_id>/comments', methods=['POST'])
-# @login_required
+@login_required
 def add_comment(post_id):
-    print(dict(session))
-    raise
     data = request.json
     comment = utils.create_comment({**data, 'post_id': post_id})
     return utils.comment_to_json(comment)
@@ -50,17 +49,13 @@ def index():
     return f'HELLO {current_user}'
 
 
+
 @app.route('/api/auth/telegram', methods=['GET'])
-def auth_telegram2():
+def auth_telegram():
     args, next_url = validate_telegram_auth()
     user = create_user(args)
-    print('Logged', login_user(user, remember=True))
-    print(dict(session))
+    login_user(user, remember=True)
+
     if not is_safe_url(next_url):
         return abort(400)
-    session['hello'] = 'world!'
-    # flask.url_for()
-    print(next_url)
-    # return 'ok'
     return flask.redirect(next_url)
-    # return redirect(next_url)

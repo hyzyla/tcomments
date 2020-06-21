@@ -10,7 +10,8 @@ services:
     depends_on: [app, web]
     volumes:
       - ./nginx/app.conf:/etc/nginx/conf.d/default.conf
-    ports: ['5000:5000']
+      - ./nginx/certificates:/certificates
+    ports: ['443:443', '80:80']
 
   web:
     tty: true
@@ -24,7 +25,7 @@ services:
     environment:
       - NODE_ENV=development
       - REACT_APP_SERVICE_URL=http://localhost:8080
-      - CHOKIDAR_USEPOLLING=true
+#      - CHOKIDAR_USEPOLLING=true
     depends_on: ["app"]
 
   app:
@@ -33,9 +34,7 @@ services:
       DATABASE_URL: postgres://admin:admin@db/tcomments
       TELEGRAM_TOKEN: 1234815723:AAHAkpRGROOYOjzZXONvgK990mROjISOkbM
       TELEGRAM_BOT_USERNAME: "@dev_tcomments_bot"
-      DOMAIN: 69e96a83cd09.ngrok.io
-      SERVER_NAME: 'http//localhost:5000'
-      SESSION_COOKIE_DOMAIN: 127.0.0.1
+      TELEGRAM_WEBHOOK_DOMAIN: localhost.dev
       SECRET_KEY: 9qD7OKjYzZ0d8EsjBIKQ4RR57A1GHZODT
       FLASK_APP: app:app
       FLASK_DEBUG: "1"

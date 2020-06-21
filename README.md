@@ -1,5 +1,10 @@
 *APP*
 
+Append local domain to /etc/hots
+```shell script
+echo '127.0.0.1 localhost.dev' | sudo tee -a  /private/etc/hosts  # /etc/hosts for linux
+```
+
 Note: `dcp = docker-compose`
 
 ### Migration:

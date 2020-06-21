@@ -2,7 +2,7 @@ import { Post, Comment } from "./types";
 
 
 const processRequest = async (url: string, init: RequestInit | undefined = undefined) => {
-    const domain = process.env.NEXT_PUBLIC_SERVER_DOMAIN || process.env.SERVER_DOMAIN;
+    const domain = process.env.SERVER_DOMAIN || process.env.NEXT_PUBLIC_SERVER_DOMAIN;
     const resourceURL = domain ? `${domain}${url}` : url;
     const res = await fetch(resourceURL, init)
     return await res.json();

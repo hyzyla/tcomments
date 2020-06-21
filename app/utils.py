@@ -139,7 +139,7 @@ def group_comments(comments: List[Comment], parent_id: Optional[str] = None) -> 
 
 def build_open_comments_button(post: Post):
     bot_username = app.config['TELEGRAM_BOT_USERNAME']
-    domain = app.config['DOMAIN']
+    domain = app.config['TELEGRAM_WEBHOOK_DOMAIN']
     login_url = LoginUrl(
         url=f'{domain}/api/auth/telegram?next_url=/posts/{post.id}',
         bot_username=bot_username,
