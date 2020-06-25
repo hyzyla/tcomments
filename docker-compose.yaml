@@ -26,6 +26,8 @@ services:
       - NODE_ENV=development
       - REACT_APP_SERVICE_URL=http://localhost:8080
     depends_on: ["app"]
+    entrypoint: npm
+    command: run dev
 
   app:
     tty: true
