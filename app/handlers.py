@@ -6,7 +6,7 @@ from werkzeug.exceptions import abort
 from app import utils
 from app.utils import (
     get_update_from_request, validate_telegram_auth, create_user,
-    is_safe_url, get_post_comments, group_comments, comments_to_json
+    is_safe_url, get_post_comments, group_comments, comments_to_json, reverse_parent
 )
 from . import app, dispatcher
 
@@ -25,6 +25,8 @@ def get_post(post_id):
 def get_comments(post_id):
     comments = get_post_comments(post_id)
     grouped = group_comments(comments)
+    grouped = reverse_parent(grouped)
+
     data = comments_to_json(grouped)
     return jsonify(data)
 
