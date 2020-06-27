@@ -12,7 +12,7 @@ export const Comments: FC<Props> = ({comments: initComments}) => {
     const [comments, setComments] = useState<Comment[]>(initComments);
 
     const handleSubmit = (comment: Comment) => {
-        setComments([...comments, comment])
+        setComments([comment, ...comments])
     };
 
 

@@ -142,6 +142,9 @@ def group_comments(comments: List[Comment], parent_id: Optional[str] = None) -> 
     ]
 
 
+def reverse_parent(comments: List[GroupedComment]) -> List[GroupedComment]:
+    return list(reversed(comments))
+
 
 def build_open_comments_button(post: Post):
     bot_username = app.config['TELEGRAM_BOT_USERNAME']
