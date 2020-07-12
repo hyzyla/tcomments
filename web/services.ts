@@ -1,4 +1,4 @@
-import { Post, Comment } from "./types";
+import {Post, Comment, User} from "./types";
 
 
 const processRequest = async (url: string, init: RequestInit | undefined = undefined) => {
@@ -31,6 +31,10 @@ export const getPost = async (postID: string): Promise<Post> => {
 
 export const getPostComments = async (postID: string): Promise<Comment[]> => {
     return await getRequest(`/api/posts/${postID}/comments`);
+}
+
+export const getCurrentUser = async (): Promise<User[]> => {
+    return await getRequest(`/api/users/current`);
 }
 
 export const createComment = async (postID: string, text: string, parentID: string = undefined): Promise<Comment> => {

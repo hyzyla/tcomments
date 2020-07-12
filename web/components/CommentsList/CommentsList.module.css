@@ -4,7 +4,6 @@
 }
 
 
-
 .header {
     display: flex;
 }
@@ -38,6 +37,9 @@
 }
 
 .content {
+    background-color: white;
+    border-radius: 10px;
+    padding: 7px;
     margin-bottom: 10px;
 }
 
@@ -60,6 +62,8 @@
 .icon {
     width: 40px;
     height: 40px;
-    border-radius: 5px;
+    min-width: 40px;
+    min-height: 40px;
+    border-radius: 50%;
     background-color: grey
 }

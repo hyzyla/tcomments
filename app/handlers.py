@@ -42,6 +42,12 @@ def add_comment(post_id):
     return utils.comment_to_json(comment)
 
 
+@app.route('/api/users/current', methods=['GET'])
+@login_required
+def get_current_user():
+    return utils.user_to_json(user=current_user)
+
+
 @app.route('/api/bot', methods=['GET', 'POST'])
 def bot_handler():
     update = get_update_from_request()

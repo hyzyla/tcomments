@@ -2,7 +2,9 @@ import React, {ChangeEvent, FC, FormEvent, useContext, useState} from "react";
 import css from "./CommentForm.module.css"
 import {Comment, Post} from "../../types";
 import {createComment} from "../../services";
-import {postContext} from "../PostPage/PostPage";
+import {currentUserContext, postContext} from "../PostPage/PostPage";
+import {string} from "prop-types";
+import {UserIcon} from "../UserIcon/UserIcon";
 
 interface Props {
     parentID?: string;
@@ -14,7 +16,9 @@ interface Props {
 export const CommentForm: FC<Props> = ({onSubmit, onCancel, parentID}) => {
     const [text, setText] = useState<string>('');
     const [error, setError] = useState<string>('');
+    const [rows, setRows] = useState<number>(1 );
     const post = useContext(postContext)
+    const currentUser = useContext(currentUserContext)
 
     const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
         evt.preventDefault();
@@ -31,21 +35,25 @@ export const CommentForm: FC<Props> = ({onSubmit, onCancel, parentID}) => {
 
     const handleTextChange = (evt: ChangeEvent<HTMLTextAreaElement>) => {
         setText(evt.currentTarget.value);
+        const textareaLineHeight = 24;
+
+        const previousRows = evt.target.rows;
+  	    evt.target.rows = 1; // reset number of rows in textarea
+
+        evt.target.rows = evt.target.rows + 1;
     }
+
     return (
         <form className={css.form} onSubmit={handleSubmit}>
-            <textarea className={css.input} value={text} onChange={handleTextChange}/>
+                        <UserIcon user={currentUser} />
+            <textarea
+                rows={rows}
+                className={css.input} value={text} onChange={handleTextChange}
+            />
+            <button type="submit" className={css.button}>
+                Submit
+            </button>
             {error && <p className={css.error}>{error}</p>}
-            <div className={css.buttons}>
-                {onCancel && (
-                    <button type="submit" onClick={onCancel}>
-                        Cancel
-                    </button>
-                )}
-                <button type="submit">
-                    Submit
-                </button>
-            </div>
         </form>
     );
 }

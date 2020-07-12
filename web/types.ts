@@ -6,11 +6,17 @@ export interface Post {
 }
 
 
-export interface CommentAuthor {
+
+
+
+export interface User {
     id: string
     name: string;
     photoURL: string;
 }
+
+
+export interface CommentAuthor extends User {}
 
 
 export interface Comment {

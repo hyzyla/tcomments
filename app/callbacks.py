@@ -8,7 +8,7 @@ def start(update, context):
     reply_markup = ReplyKeyboardMarkup(
         keyboard=[["I did that"]],
         resize_keyboard=True,
-        one_time_keyboard=False,
+        one_time_keyboard=True,
     )
 
     update.message.reply_text(
@@ -37,7 +37,6 @@ def forwarded_post(update, context):
         return
 
     post = create_post(forwarded_message)
-    print(forwarded_message)
     dispatcher.bot.edit_message_reply_markup(
         chat_id=chat.id,
         message_id=forwarded_message.forward_from_message_id,

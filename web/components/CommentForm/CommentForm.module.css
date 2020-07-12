@@ -1,26 +1,29 @@
 .form {
     display: flex;
-    flex-direction: column;
 }
 
 
-.buttons {
+.button {
     width: 100%;
     display: flex;
-    justify-content: end;
+    flex-basis: min-content;
+    justify-content: flex-end;
 }
 
 .input {
-    width: auto;
+    width: 100%;
+    border-radius: 10px;
+    outline: none;
+    font-size: 16px;
+    font-family: sans-serif;
+    padding: 7px;
     margin-bottom: 5px;
-    height: 70px;
-    resize: vertical;
+    resize: none;
+    border: 0.5px solid #006FBB;
 }
 
-
-
 .error {
-    color: red;
+    color: #ff0000;
     font-size: small;
     margin: 0;
 }
