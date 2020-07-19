@@ -8,8 +8,8 @@ const processRequest = async (url: string, init: RequestInit | undefined = undef
     return await res.json();
 }
 
-const getRequest = async (url: string) => {
-    return await processRequest(url)
+const getRequest = async (url: string, init: RequestInit | undefined = undefined) => {
+    return await processRequest(url, init)
 }
 
 const postRequest = async (url: string, data: any) => {
@@ -33,8 +33,12 @@ export const getPostComments = async (postID: string): Promise<Comment[]> => {
     return await getRequest(`/api/posts/${postID}/comments`);
 }
 
-export const getCurrentUser = async (): Promise<User[]> => {
-    return await getRequest(`/api/users/current`);
+export const getCurrentUser = async (cookie: string | null): Promise<User[]> => {
+    return await getRequest(`/api/users/current`, {
+        headers: {
+            cookie
+        },
+    });
 }
 
 export const createComment = async (postID: string, text: string, parentID: string = undefined): Promise<Comment> => {

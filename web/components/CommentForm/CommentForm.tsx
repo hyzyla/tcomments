@@ -5,6 +5,7 @@ import {createComment} from "../../services";
 import {currentUserContext, postContext} from "../PostPage/PostPage";
 import {string} from "prop-types";
 import {UserIcon} from "../UserIcon/UserIcon";
+import SendSVG from "./send.svg";
 
 interface Props {
     parentID?: string;
@@ -35,24 +36,27 @@ export const CommentForm: FC<Props> = ({onSubmit, onCancel, parentID}) => {
 
     const handleTextChange = (evt: ChangeEvent<HTMLTextAreaElement>) => {
         setText(evt.currentTarget.value);
-        const textareaLineHeight = 24;
-
-        const previousRows = evt.target.rows;
-  	    evt.target.rows = 1; // reset number of rows in textarea
-
-        evt.target.rows = evt.target.rows + 1;
+        // const textareaLineHeight = 24;
+        //
+        // const previousRows = evt.target.rows;
+  	  //   evt.target.rows = 1; // reset number of rows in textarea
+        //
+        // evt.target.rows = evt.target.rows + 1;
     }
 
     return (
         <form className={css.form} onSubmit={handleSubmit}>
-                        <UserIcon user={currentUser} />
+            <UserIcon user={currentUser} />
             <textarea
+                className={css.input}
                 rows={rows}
-                className={css.input} value={text} onChange={handleTextChange}
+                value={text}
+                onChange={handleTextChange}
             />
             <button type="submit" className={css.button}>
                 Submit
             </button>
+            <SendSVG />
             {error && <p className={css.error}>{error}</p>}
         </form>
     );
