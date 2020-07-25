@@ -153,7 +153,7 @@ def build_open_comments_button(post: Post):
         url=f'{domain}/api/auth/telegram?next_url=/posts/{post.id}',
         bot_username=bot_username,
     )
-    return InlineKeyboardButton("Open comments", login_url=login_url)
+    return InlineKeyboardButton("Коментарі", login_url=login_url)
 
 
 def is_safe_url(target):
