@@ -9,7 +9,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const { params } = context;
     const postID = params.pid;
     // this is client side cookie
-    const cookie = context.req ? context.req.headers.cookie : null
+    const cookie = context.req ? context.req.headers.cookie : null;
 
     const post = await getPost(postID as string);
     const comments = await getPostComments(postID as string);

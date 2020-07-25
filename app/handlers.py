@@ -1,7 +1,9 @@
+from http import HTTPStatus
+
 import flask
 from flask import jsonify, request
 from flask_login import login_user, current_user, login_required
-from werkzeug.exceptions import abort
+from werkzeug.exceptions import abort, NotFound
 
 from app import utils
 from app.utils import (
@@ -14,6 +16,9 @@ from . import app, dispatcher
 @app.route('/api/posts/<post_id>', methods=['GET'])
 def get_post(post_id):
     post = utils.get_post(post_id)
+    if not post:
+        raise NotFound()
+
     return jsonify({
         'id': post.id,
         'text': post.text,

@@ -1,11 +1,11 @@
-import React, {ChangeEvent, FC, FormEvent, useContext, useState} from "react";
+import React, { ChangeEvent, FC, FormEvent, useContext, useEffect, useRef, useState } from "react";
 import css from "./CommentForm.module.css"
 import {Comment, Post} from "../../types";
 import {createComment} from "../../services";
 import {currentUserContext, postContext} from "../PostPage/PostPage";
-import {string} from "prop-types";
 import {UserIcon} from "../UserIcon/UserIcon";
 import SendSVG from "./send.svg";
+import autosize from "autosize";
 
 interface Props {
     parentID?: string;
@@ -17,12 +17,20 @@ interface Props {
 export const CommentForm: FC<Props> = ({onSubmit, onCancel, parentID}) => {
     const [text, setText] = useState<string>('');
     const [error, setError] = useState<string>('');
-    const [rows, setRows] = useState<number>(1 );
-    const post = useContext(postContext)
-    const currentUser = useContext(currentUserContext)
+    const post = useContext(postContext);
+    const currentUser = useContext(currentUserContext);
+    const textArea = useRef(null);
+
+    useEffect(() => {
+        textArea.current.focus();
+        autosize(textArea.current);
+    }, []);
 
     const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
         evt.preventDefault();
+        if (!text) {
+            return; // nothing to submit
+        }
         let comment: Comment | undefined = undefined;
         try {
             comment = await createComment(post.id, text, parentID);
@@ -36,28 +44,23 @@ export const CommentForm: FC<Props> = ({onSubmit, onCancel, parentID}) => {
 
     const handleTextChange = (evt: ChangeEvent<HTMLTextAreaElement>) => {
         setText(evt.currentTarget.value);
-        // const textareaLineHeight = 24;
-        //
-        // const previousRows = evt.target.rows;
-  	  //   evt.target.rows = 1; // reset number of rows in textarea
-        //
-        // evt.target.rows = evt.target.rows + 1;
-    }
+    };
 
     return (
         <form className={css.form} onSubmit={handleSubmit}>
             <UserIcon user={currentUser} />
             <textarea
                 className={css.input}
-                rows={rows}
+                rows={1}
                 value={text}
+                ref={textArea}
                 onChange={handleTextChange}
+                placeholder="Напишіть ваш коментар"
             />
             <button type="submit" className={css.button}>
-                Submit
+                <SendSVG />
             </button>
-            <SendSVG />
             {error && <p className={css.error}>{error}</p>}
         </form>
     );
-}
+};

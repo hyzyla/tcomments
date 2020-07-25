@@ -12,7 +12,7 @@ interface Props {
 }
 
 export const CommentRow: FC<Props> = ({comment,}) => {
-    const [children, setChildren] = useState<Comment[]>(comment.children || [])
+    const [children, setChildren] = useState<Comment[]>(comment.children || []);
     const [activeReply, setActiveReply] = useState(false);
     const handleReplyClick = () => {
         setActiveReply(!activeReply);
@@ -21,17 +21,19 @@ export const CommentRow: FC<Props> = ({comment,}) => {
     const handleSubmit = (comment: Comment) => {
         setChildren([...children, comment]);
         setActiveReply(false);
-    }
+    };
 
     const handleCancel = () => {
         setActiveReply(false);
-    }
+    };
 
 
     return (
         <li className={css.item}>
-            <UserIcon user={comment.author} />
-
+            <div className={css.sideBar}>
+                <UserIcon user={comment.author} />
+                <div className={css.line} />
+            </div>
                 <div className={css.body}>
                     <div className={css.content}>
                         <div className={css.header}>
@@ -40,7 +42,11 @@ export const CommentRow: FC<Props> = ({comment,}) => {
                         <p className={css.text}>{comment.text}</p>
                      </div>
                     <div className={css.action}>
-                        <PseudoLink onClick={handleReplyClick}>reply</PseudoLink>
+                        <PseudoLink onClick={handleReplyClick}>
+                            <div className={css.reply}>
+                                Reply
+                            </div>
+                        </PseudoLink>
                     </div>
 
                     {activeReply && (
@@ -54,4 +60,4 @@ export const CommentRow: FC<Props> = ({comment,}) => {
                 </div>
         </li>
     );
-}
+};

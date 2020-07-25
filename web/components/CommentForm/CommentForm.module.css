@@ -7,7 +7,10 @@
     width: 100%;
     display: flex;
     flex-basis: min-content;
-    justify-content: flex-end;
+    align-items: center;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
 }
 
 .input {
@@ -16,13 +19,12 @@
     min-height: 1px;
     outline: none;
     font-size: 14px;
-    line-height: 16px;
-    height: 18px;
+    height: 17px;
     font-family: sans-serif;
     padding: 7px;
     margin-left: 8px;
     resize: none;
-    border: 0.5px solid #006FBB;
+    border: 1px solid #006FBB;
 }
 
 .error {

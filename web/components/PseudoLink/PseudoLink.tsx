@@ -9,8 +9,8 @@ const PseudoLink: FC<Props> = (props) => {
     const handleClick: MouseEventHandler<HTMLButtonElement> = (evt) => {
         evt.preventDefault();
         props.onClick(evt);
-    }
+    };
     return <button className={css.link} onClick={handleClick}>{props.children}</button>
-}
+};
 
 export default PseudoLink;
