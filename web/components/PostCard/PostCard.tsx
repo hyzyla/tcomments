@@ -11,8 +11,9 @@ interface Props {
 export const PostCard: FC<Props> = ({ post }) => {
     return (
         <div className={css.card}>
-
-            {post.text.split('\n').map((line, idx) => <p key={idx}>{line}</p>)}
+            {post.text.split('\n').map((line, idx) => {
+                return <p key={idx} className={css.paragraph}>{line}</p>;
+            })}
         </div>
     )
 };

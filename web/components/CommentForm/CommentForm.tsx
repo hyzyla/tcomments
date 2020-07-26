@@ -40,6 +40,7 @@ export const CommentForm: FC<Props> = ({onSubmit, onCancel, parentID}) => {
         }
         onSubmit(comment);
         setText('');
+        autosize.update(textArea.current);
     };
 
     const handleTextChange = (evt: ChangeEvent<HTMLTextAreaElement>) => {
