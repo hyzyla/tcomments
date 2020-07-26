@@ -7,7 +7,8 @@ from urllib.parse import urlparse, urljoin
 import flask
 import telegram
 from flask import request, abort, Response
-from telegram import LoginUrl, InlineKeyboardButton
+from flask_login import current_user
+from telegram import LoginUrl, InlineKeyboardButton, ParseMode, InlineKeyboardMarkup
 
 from app import dispatcher, app, db
 from app.models import User, Post, Comment
@@ -65,15 +66,38 @@ def create_user(args: Dict[str, str]) -> User:
     return user
 
 
-def create_post(message: telegram.Message) -> Post:
+def create_post_author(user: telegram.User):
+    user = User.query.filter_by(telegram_id=user.id).first()
+    if not user:
+        user = User(
+            telegram_id=user.id,
+            first_name=user.first_name,
+            last_name=user.last_name,
+            username=user.username,
+            photo_url=user.photo_url,
+        )
+        db.session.add(user)
+    else:
+        user.first_name = user.first_name
+        user.last_name = user.last_name
+        user.username = user.username
+        user.photo_url = user.photo_url
+
+    db.session.commit()
+    return user
+
+
+def create_post(message: telegram.Message, user: telegram.User) -> Post:
     message_id = str(message.forward_from_message_id)
     post = Post.query.filter_by(message_id=message_id).first()
     if not post:
+        author = create_post_author(user)
         post = Post(
             message_id=message_id,
             text=message.text,
             date=message.date,
             telegram_data=message.to_dict(),
+            author=author
         )
         db.session.add(post)
         db.session.commit()
@@ -152,6 +176,7 @@ def build_open_comments_button(post: Post):
     login_url = LoginUrl(
         url=f'{domain}/api/auth/telegram?next_url=/posts/{post.id}',
         bot_username=bot_username,
+        request_write_access=True,
     )
     return InlineKeyboardButton("Коментарі", login_url=login_url)
 
@@ -165,3 +190,26 @@ def is_safe_url(target):
 def redirect(target: str):
     return flask.redirect(target)
 
+
+def send_comment_notifications(comment: Comment):
+    post = comment.post
+    commentator = comment.author
+
+    users = [post.author]
+    parent = comment.parent
+    if parent:
+        users.append(parent.author)
+
+    for user in users:
+        if user.id == current_user.id:
+            continue
+
+        dispatcher.bot.send_message(
+            chat_id=user.telegram_id,
+            text=(
+                f'*Новий коментар*\n'
+                f'_{commentator.name}_: {comment.text}'
+            ),
+            parse_mode=ParseMode.MARKDOWN_V2,
+            reply_markup=InlineKeyboardMarkup([[build_open_comments_button(post)]]),
+        )

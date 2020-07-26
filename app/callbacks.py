@@ -1,4 +1,4 @@
-from telegram import InlineKeyboardMarkup, ReplyKeyboardMarkup
+from telegram import InlineKeyboardMarkup, ReplyKeyboardMarkup, Update
 
 from app.utils import build_open_comments_button, create_post
 from . import dispatcher
@@ -23,7 +23,7 @@ def after_promotion(update, context):
     update.message.reply_text("OK, now forward post to me from your channel")
 
 
-def forwarded_post(update, context):
+def forwarded_post(update: Update, context):
     forwarded_message = update.effective_message
     chat = forwarded_message.forward_from_chat
     me = dispatcher.bot.get_me()
@@ -35,8 +35,8 @@ def forwarded_post(update, context):
             'Grant access and forward message again'
         )
         return
-
-    post = create_post(forwarded_message)
+    telegram_user = update.effective_user
+    post = create_post(forwarded_message, telegram_user)
     dispatcher.bot.edit_message_reply_markup(
         chat_id=chat.id,
         message_id=forwarded_message.forward_from_message_id,

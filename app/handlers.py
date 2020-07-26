@@ -44,6 +44,7 @@ def add_comment(post_id):
         data={**data, 'post_id': post_id},
         user=current_user,
     )
+    utils.send_comment_notifications(comment)
     return utils.comment_to_json(comment)
 
 

@@ -24,8 +24,8 @@ class ID(db.Column):
 
 
 class Text(db.Column):
-    def __init__(self, nullable: bool = False):
-        super().__init__(db.Text, nullable=nullable)
+    def __init__(self, nullable: bool = False, unique: bool = False):
+        super().__init__(db.Text, nullable=nullable, unique=unique)
 
 
 class ForeignID(db.Column):
@@ -39,9 +39,9 @@ class DateTime(db.Column):
         super().__init__(db.DateTime, nullable=nullable)
 
 
-class JSON(db.Column):
+class JSONB(db.Column):
     def __init__(self, nullable: bool = False):
-        super().__init__(db.JSON, nullable=nullable)
+        super().__init__(postgresql.JSONB, nullable=nullable)
 
 
 class DateCreated(db.Column):
