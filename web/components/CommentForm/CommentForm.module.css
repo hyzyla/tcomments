@@ -4,7 +4,7 @@
 
 
 .button {
-    width: 100%;
+    width: 45px;
     display: flex;
     flex-basis: min-content;
     align-items: center;
