@@ -14,10 +14,24 @@ from app import dispatcher, app, db
 from app.models import User, Post, Comment
 from app.types import GroupedComment
 
+from jinja2 import Environment, BaseLoader, select_autoescape
+
+jinja2_env = Environment(loader=BaseLoader, autoescape=select_autoescape(['html', 'xml']))
+
+NEW_COMMENT_TEMPLATE = """
+<b>Новий коментар:</b>
+<i>{{ name }}</i>: {{ text }}
+"""
+
 
 def get_update_from_request():
     bot = dispatcher.bot
     return telegram.Update.de_json(request.get_json(force=True), bot)
+
+
+def render_html(template: str, **kwargs):
+    template = jinja2_env.from_string(template)
+    return template.render(**kwargs)
 
 
 def validate_telegram_auth():
@@ -203,14 +217,17 @@ def send_comment_notifications(comment: Comment):
 
     for user in users:
         if user.id == current_user.id:
-            continue
-
-        dispatcher.bot.send_message(
-            chat_id=user.telegram_id,
-            text=(
-                f'*Новий коментар*\n'
-                f'_{commentator.name}_: {comment.text}'
-            ),
-            parse_mode=ParseMode.MARKDOWN_V2,
-            reply_markup=InlineKeyboardMarkup([[build_open_comments_button(post)]]),
-        )
+            pass  # continue
+        try:
+            dispatcher.bot.send_message(
+                chat_id=user.telegram_id,
+                text=render_html(
+                    template=NEW_COMMENT_TEMPLATE,
+                    name=commentator.name,
+                    text=comment.text,
+                ),
+                parse_mode=ParseMode.HTML,
+                reply_markup=InlineKeyboardMarkup([[build_open_comments_button(post)]]),
+            )
+        except Exception as exc:
+            app.logger.exception('Error on sending notifications')
