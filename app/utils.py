@@ -217,7 +217,7 @@ def send_comment_notifications(comment: Comment):
 
     for user in users:
         if user.id == current_user.id:
-            pass  # continue
+            continue
         try:
             dispatcher.bot.send_message(
                 chat_id=user.telegram_id,
