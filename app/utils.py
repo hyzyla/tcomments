@@ -67,10 +67,11 @@ def create_user(args: Dict[str, str]) -> User:
 
 
 def create_post_author(user: telegram.User):
-    user = User.query.filter_by(telegram_id=user.id).first()
+    telegram_id = str(user.id)
+    user = User.query.filter_by(telegram_id=telegram_id).first()
     if not user:
         user = User(
-            telegram_id=user.id,
+            telegram_id=telegram_id,
             first_name=user.first_name,
             last_name=user.last_name,
             username=user.username,
