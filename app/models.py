@@ -52,4 +52,4 @@ class Comment(db.Model):
 
     author = db.relationship('User')
     post = db.relationship('Post')
-    parent = db.relationship('Comment')
+    parent = db.relationship('Comment', remote_side=[id])

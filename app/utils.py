@@ -215,9 +215,13 @@ def send_comment_notifications(comment: Comment):
     if parent:
         users.append(parent.author)
 
+    seen = set()
     for user in users:
         if user.id == current_user.id:
             continue
+        if user.id in seen:
+            continue
+
         try:
             dispatcher.bot.send_message(
                 chat_id=user.telegram_id,
@@ -231,3 +235,4 @@ def send_comment_notifications(comment: Comment):
             )
         except Exception as exc:
             app.logger.exception('Error on sending notifications')
+        seen.add(user.id)
