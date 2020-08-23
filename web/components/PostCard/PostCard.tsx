@@ -1,6 +1,8 @@
-import React, { FC } from 'react'
+import React, { FC } from 'react';
 
-import { Post } from '../../types'
+import { Post } from '../../types';
+
+import {PostText} from "./PostText";
 
 import css from './PostCard.module.css';
 
@@ -11,9 +13,7 @@ interface Props {
 export const PostCard: FC<Props> = ({ post }) => {
     return (
         <div className={css.card}>
-            {post.text.split('\n').map((line, idx) => {
-                return <p key={idx} className={css.paragraph}>{line}</p>;
-            })}
+            <PostText html={post.textHTML} />
         </div>
     )
 };

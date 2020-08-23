@@ -43,11 +43,11 @@ export const CommentRow: FC<Props> = ({comment,}) => {
                     <div className={css.header}>
                         <div className={css.author}>{comment.author.name}</div>
                     </div>
-                    <p className={css.text}>
+                    <div className={css.text}>
                         {comment.text.split('\n').map((line, idx) => {
                             return <p key={idx} className={css.paragraph}>{line}</p>;
                         })}
-                    </p>
+                    </div>
                 </div>
                 {currentUser && (
                     <div className={css.action}>

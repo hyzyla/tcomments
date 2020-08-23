@@ -154,6 +154,17 @@ def comments_to_json(comments: List[GroupedComment]) -> List[Dict[str, Any]]:
     ]
 
 
+def post_to_json(post: Post) -> Dict[str, Any]:
+    message = telegram.Message.de_json(post.telegram_data, bot=dispatcher.bot)
+    text_html = message.text_html
+    return {
+        'id': post.id,
+        'text': post.text,
+        'date': post.date,
+        'textHTML': text_html
+    }
+
+
 def create_comment(data: Dict[str, str], user: User) -> Comment:
     comment = Comment(
         text=data['text'],

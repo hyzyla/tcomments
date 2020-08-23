@@ -8,7 +8,7 @@ from werkzeug.exceptions import abort, NotFound
 from app import utils
 from app.utils import (
     get_update_from_request, validate_telegram_auth, create_user,
-    is_safe_url, get_post_comments, group_comments, comments_to_json, reverse_parent
+    is_safe_url, get_post_comments, group_comments, comments_to_json, reverse_parent, post_to_json
 )
 from . import app, dispatcher
 
@@ -19,11 +19,8 @@ def get_post(post_id):
     if not post:
         raise NotFound()
 
-    return jsonify({
-        'id': post.id,
-        'text': post.text,
-        'date': post.date,
-    })
+    data = post_to_json(post)
+    return jsonify(data)
 
 
 @app.route('/api/posts/<post_id>/comments', methods=['GET'])
