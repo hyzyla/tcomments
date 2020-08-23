@@ -24,7 +24,7 @@ interface Props {
 }
 
 export const PostText: FC<Props> = ({ html }) => {
-  const sanitized = sanitize(html).replaceAll('\n', '<br />');
+  const sanitized = sanitize(html).replace(/\n/g, "<br />");
 
   console.log(sanitized);
   return (
