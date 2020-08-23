@@ -24,13 +24,10 @@ interface Props {
 }
 
 export const PostText: FC<Props> = ({ html }) => {
-  const sanitized = sanitize(html);
-  const paragraphs = sanitized.split('\n')
+  const sanitized = sanitize(html).replaceAll('\n', '<br />');
+
+  console.log(sanitized);
   return (
-      <>
-        {paragraphs.map((paragraph, index) => (
-            <p key={index} className={css.paragraph} dangerouslySetInnerHTML={{__html: paragraph}} />
-        ))}
-      </>
+      <div className={css.paragraph} dangerouslySetInnerHTML={{__html: sanitized}} />
   );
 };
