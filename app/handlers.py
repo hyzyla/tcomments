@@ -50,7 +50,7 @@ def add_comment(post_id):
 
 @app.route('/api/users/current', methods=['GET'])
 def get_current_user():
-    if not current_user:
+    if not current_user or not current_user.is_authenticated:
         raise abort(HTTPStatus.NOT_FOUND)
 
     return utils.user_to_json(user=current_user)
