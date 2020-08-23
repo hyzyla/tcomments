@@ -4,11 +4,11 @@ import {Post, Comment, User} from "./types";
 const processRequest = async (url: string, init: RequestInit | undefined = undefined) => {
     const domain = process.env.SERVER_DOMAIN || process.env.NEXT_PUBLIC_SERVER_DOMAIN;
     const resourceURL = domain ? `${domain}${url}` : url;
-    const res = await fetch(resourceURL, init);
-    if (!res.ok) {
-        console.log(await res.text())
+    const response = await fetch(resourceURL, init);
+    if (!response.ok) {
+        throw Error(response.statusText);
     }
-    return await res.json();
+    return await response.json();
 };
 
 const getRequest = async (url: string, init: RequestInit | undefined = undefined) => {
@@ -37,12 +37,17 @@ export const getPostComments = async (postID: string): Promise<Comment[]> => {
 };
 
 
-export const getCurrentUser = async (cookie: string | null): Promise<User[]> => {
-    return await getRequest(`/api/users/current`, {
-        headers: {
-            cookie
-        },
-    });
+export const getCurrentUser = async (cookie: string | null): Promise<User | null> => {
+    try {
+        return await getRequest(`/api/users/current`, {
+            headers: {
+                cookie
+            },
+        });
+    } catch (e) {
+        // TODO: catch only NOT FOUND errors
+        return null;
+    }
 };
 
 export const createComment = async (postID: string, text: string, parentID: string = undefined): Promise<Comment> => {

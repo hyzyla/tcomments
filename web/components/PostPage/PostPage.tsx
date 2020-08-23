@@ -4,13 +4,13 @@ import { PostCard } from "../PostCard/PostCard";
 import {Post, Comment, User} from "../../types";
 import {Comments} from "../CommentsList/Comments";
 
-export const postContext = React.createContext<Post | null>(null);
-export const currentUserContext = React.createContext<User | null>(null);
+export const postContext = React.createContext<Post | undefined>(undefined);
+export const currentUserContext = React.createContext<User | undefined>(undefined);
 
 interface Props {
     post: Post;
     comments: Comment[],
-    currentUser: User,
+    currentUser?: User,
 }
 
 export const PostPage: FC<Props> = (props) => {

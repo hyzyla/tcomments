@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FC, FormEvent, useContext, useEffect, useRef, useState } from "react";
 import css from "./CommentForm.module.css"
-import {Comment, Post} from "../../types";
+import {Comment, Post, User} from "../../types";
 import {createComment} from "../../services";
 import {currentUserContext, postContext} from "../PostPage/PostPage";
 import {UserIcon} from "../UserIcon/UserIcon";
@@ -13,12 +13,25 @@ interface Props {
     onCancel?: () => void;
 }
 
+interface UserProps extends Props{
+    currentUser: User;
+}
 
-export const CommentForm: FC<Props> = ({onSubmit, onCancel, parentID}) => {
+
+export const CommentForm: FC<Props> = (props) => {
+    const currentUser = useContext(currentUserContext)
+    if (!currentUser) {
+        return null
+    }
+    return <UserCommentForm {...props} currentUser={currentUser}/>;
+
+};
+
+
+export const UserCommentForm: FC<UserProps> = ({onSubmit, onCancel, parentID, currentUser}) => {
     const [text, setText] = useState<string>('');
     const [error, setError] = useState<string>('');
     const post = useContext(postContext);
-    const currentUser = useContext(currentUserContext);
     const textArea = useRef(null);
 
     useEffect(() => {
