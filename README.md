@@ -49,3 +49,9 @@ pip-compile requirements/base.in -o requirements/base.txt
 cd web
 npm start
 ```
+
+# Deploy
+```shell script
+git push dokku master  # for backend
+cd web && git push dokku master # for frontend
+```
